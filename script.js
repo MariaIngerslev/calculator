@@ -3,8 +3,8 @@ let firstOperand = '';
 let secondOperand = '';
 let currentOperator = null;
 
-// ---  MATH FUNCTIONS---
-//add two numbe½rs
+// --- BASIC MATH LOGIC ---
+//add two numbers
 function add(a, b) {
     return a + b;
 }
@@ -40,6 +40,7 @@ function operate(operator, rawNum1, rawNum2) {
             if (b === 0) return null; 
             return divide(a, b);
         default:
-            return null; 
+            return null; // Return null if the operator isn't valid
     }
 }
+
