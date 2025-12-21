@@ -39,7 +39,30 @@ function operate(operator, rawNum1, rawNum2) {
             if (b === 0) return null; 
             return divide(a, b);
         default:
-            return null; 
+            return null;
     }
 }
 
+// --- UI INTERACTIONS ---
+
+const display = document.querySelector('.display');
+const buttons = document.querySelectorAll('button');
+
+function populateDisplay(value) {
+    display.textContent = value;
+}
+
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        if (button.classList.contains('digit')) {
+            // LOGIC: Update first or second operand based on whether an operator is chosen
+            if (currentOperator === null) {
+                firstOperand += button.textContent;
+                populateDisplay(firstOperand);
+            } else {
+                secondOperand += button.textContent;
+                populateDisplay(secondOperand);
+            }
+        }
+    });
+});
