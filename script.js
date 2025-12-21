@@ -1,5 +1,10 @@
 //basic-math-logic
 
+//variables
+let firstOperand = '';
+let secondOperand = '';
+let currentOperator = null;
+
 //add two numbers
 function add(a, b) {
     return a + b;
