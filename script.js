@@ -2,6 +2,7 @@
 let firstOperand = '';
 let secondOperand = '';
 let currentOperator = null;
+let result = '';
 
 // --- MATH FUNCTIONS ---
 function add(a, b) {
@@ -61,8 +62,14 @@ buttons.forEach(button => {
                 populateDisplay(firstOperand);
             } else {
                 secondOperand += button.textContent;
-                populateDisplay(secondOperand);
+                populateDisplay(firstOperand + currentOperator +secondOperand);
             }
         }
+        else if (button.classList.contains('operator')) {
+            if (firstOperand !== '') {
+                currentOperator = button.textContent;
+                populateDisplay(firstOperand + currentOperator);
+            }
+        } 
     });
 });
