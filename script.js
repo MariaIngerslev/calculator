@@ -56,20 +56,24 @@ function populateDisplay(value) {
 buttons.forEach(button => {
     button.addEventListener('click', () => {
         if (button.classList.contains('digit')) {
-            // LOGIC: Update first or second operand based on whether an operator is chosen
             if (currentOperator === null) {
                 firstOperand += button.textContent;
                 populateDisplay(firstOperand);
             } else {
                 secondOperand += button.textContent;
-                populateDisplay(firstOperand + currentOperator +secondOperand);
+                populateDisplay(firstOperand + currentOperator + secondOperand);
             }
         }
         else if (button.classList.contains('operator')) {
-            if (firstOperand !== '') {
-                currentOperator = button.textContent;
-                populateDisplay(firstOperand + currentOperator);
+            if (firstOperand === '') return; 
+            
+            if (secondOperand !== '') {
+                result = operate(currentOperator, firstOperand, secondOperand);
+                firstOperand = result.toString();
+                secondOperand = '';
             }
-        } 
-    });
-});
+            currentOperator = button.textContent;
+            populateDisplay(firstOperand + currentOperator);
+        }
+    }); 
+}); 
