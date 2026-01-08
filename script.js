@@ -83,5 +83,12 @@ buttons.forEach(button => {
             secondOperand = '';
             currentOperator = null;
         }
+        else if (button.classList.contains('clear-all')) {
+            firstOperand = '';
+            secondOperand = '';
+            currentOperator = null;
+            result = '';
+            populateDisplay('0');
+        }
     }); 
 }); 
