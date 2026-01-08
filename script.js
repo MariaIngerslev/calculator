@@ -75,5 +75,13 @@ buttons.forEach(button => {
             currentOperator = button.textContent;
             populateDisplay(firstOperand + currentOperator);
         }
+        else if (button.classList.contains('equals')) {
+            if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
+            result = operate(currentOperator, firstOperand, secondOperand);
+            populateDisplay(result);
+            firstOperand = result.toString();
+            secondOperand = '';
+            currentOperator = null;
+        }
     }); 
 }); 
