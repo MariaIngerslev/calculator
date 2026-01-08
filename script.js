@@ -84,6 +84,16 @@ buttons.forEach(button => {
             // Chained Operations: If expression is full (a + b), calculate immediately before adding new operator
             if (secondOperand !== '') {
                 result = operate(currentOperator, firstOperand, secondOperand);
+
+                // Error Handling: Check if division by zero occurred (operate returns null)
+                if (result === null) {
+                    populateDisplay("Don't divide by 0!");
+                    firstOperand = '';
+                    secondOperand = '';
+                    currentOperator = null;
+                    return;
+                }
+
                 firstOperand = result.toString(); // Move result to first position
                 secondOperand = ''; // Reset second position
             }
@@ -97,6 +107,16 @@ buttons.forEach(button => {
         else if (button.classList.contains('equals')) {
             if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
             result = operate(currentOperator, firstOperand, secondOperand);
+
+            // Error Handling: Catch division by zero before updating state
+            if (result === null) {
+                populateDisplay("Nice try!");
+                firstOperand = '';
+                secondOperand = '';
+                currentOperator = null;
+                return;
+            }
+
             populateDisplay(result);
             firstOperand = result.toString();
             secondOperand = '';
