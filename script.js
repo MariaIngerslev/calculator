@@ -65,6 +65,12 @@ buttons.forEach(button => {
             }
         }
         else if (button.classList.contains('operator')) {
+            if (button.textContent === '-' && firstOperand === '') {
+            firstOperand = '-';
+                populateDisplay(firstOperand);
+                return;
+            }
+
             if (firstOperand === '') return; 
             
             if (secondOperand !== '') {
