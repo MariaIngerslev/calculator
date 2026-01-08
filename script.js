@@ -1,4 +1,5 @@
 // --- GLOBAL VARIABLES ---
+// State variables to track the current calculation flow
 let firstOperand = '';
 let secondOperand = '';
 let currentOperator = null;
@@ -37,7 +38,7 @@ function operate(operator, rawNum1, rawNum2) {
         case '*':
             return multiply(a, b);
         case '/':
-            if (b === 0) return null; 
+            if (b === 0) return null;  // Guard against division by zero
             return divide(a, b);
         default:
             return null;
@@ -55,7 +56,10 @@ function populateDisplay(value) {
 
 buttons.forEach(button => {
     button.addEventListener('click', () => {
+
+        // --- DIGIT INPUT ---
         if (button.classList.contains('digit')) {
+            // Append digit to the correct operand based on whether an operator is currently active
             if (currentOperator === null) {
                 firstOperand += button.textContent;
                 populateDisplay(firstOperand);
@@ -64,23 +68,32 @@ buttons.forEach(button => {
                 populateDisplay(firstOperand + currentOperator + secondOperand);
             }
         }
+
+        // --- OPERATOR INPUT ---
         else if (button.classList.contains('operator')) {
+            // Edge Case: Handle unary minus for negative starting numbers (e.g., "-5")
             if (button.textContent === '-' && firstOperand === '') {
             firstOperand = '-';
                 populateDisplay(firstOperand);
                 return;
             }
 
+            // Guard: Prevent operator selection if no number is entered yet
             if (firstOperand === '') return; 
             
+            // Chained Operations: If expression is full (a + b), calculate immediately before adding new operator
             if (secondOperand !== '') {
                 result = operate(currentOperator, firstOperand, secondOperand);
-                firstOperand = result.toString();
-                secondOperand = '';
+                firstOperand = result.toString(); // Move result to first position
+                secondOperand = ''; // Reset second position
             }
+
+            // Set new operator and update view
             currentOperator = button.textContent;
             populateDisplay(firstOperand + currentOperator);
         }
+
+        // --- EQUALS INPUT ---
         else if (button.classList.contains('equals')) {
             if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
             result = operate(currentOperator, firstOperand, secondOperand);
@@ -89,6 +102,8 @@ buttons.forEach(button => {
             secondOperand = '';
             currentOperator = null;
         }
+
+        // --- CLEAR INPUT ---
         else if (button.classList.contains('clear-all')) {
             firstOperand = '';
             secondOperand = '';
