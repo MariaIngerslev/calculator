@@ -4,6 +4,7 @@ let firstOperand = '';
 let secondOperand = '';
 let currentOperator = null;
 let result = '';
+let shouldResetScreen = false;
 
 // --- MATH FUNCTIONS ---
 function add(a, b) {
