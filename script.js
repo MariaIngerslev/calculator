@@ -45,6 +45,9 @@ function operate(operator, rawNum1, rawNum2) {
             return null;
     }
 }
+function roundResult(number) {
+    return Math.round(number * 1000) / 1000;
+} 
 
 // --- UI INTERACTIONS ---
 
@@ -84,7 +87,7 @@ buttons.forEach(button => {
             
             // Chained Operations: If expression is full (a + b), calculate immediately before adding new operator
             if (secondOperand !== '') {
-                result = operate(currentOperator, firstOperand, secondOperand);
+                result = roundResult(operate(currentOperator, firstOperand, secondOperand));
 
                 // Error Handling: Check if division by zero occurred (operate returns null)
                 if (result === null) {
@@ -107,7 +110,7 @@ buttons.forEach(button => {
         // --- EQUALS INPUT ---
         else if (button.classList.contains('equals')) {
             if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
-            result = operate(currentOperator, firstOperand, secondOperand);
+            result = roundResult(operate(currentOperator, firstOperand, secondOperand));
 
             // Error Handling: Catch division by zero before updating state
             if (result === null) {
@@ -134,3 +137,6 @@ buttons.forEach(button => {
         }
     }); 
 }); 
+
+
+
