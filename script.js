@@ -45,9 +45,23 @@ function operate(operator, rawNum1, rawNum2) {
             return null;
     }
 }
+
 function roundResult(number) {
     return Math.round(number * 1000) / 1000;
 } 
+
+// --- HELPER FUNCTIONS ---
+
+/**
+ * Resets all state variables and clears the display.
+ */
+function resetCalculator() {
+    firstOperand = '';
+    secondOperand = '';
+    currentOperator = null;
+    result = '';
+    populateDisplay('0');
+}
 
 // --- UI INTERACTIONS ---
 
@@ -63,6 +77,11 @@ buttons.forEach(button => {
 
         // --- DIGIT INPUT ---
         if (button.classList.contains('digit')) {
+            // Check state flag: Do we need to clear the old result?
+            if (shouldResetScreen === true) {
+                resetCalculator();
+                shouldResetScreen = false;
+            }
             // Append digit to the correct operand based on whether an operator is currently active
             if (currentOperator === null) {
                 firstOperand += button.textContent;
@@ -75,7 +94,10 @@ buttons.forEach(button => {
 
         // --- OPERATOR INPUT ---
         else if (button.classList.contains('operator')) {
-            // Edge Case: Handle unary minus for negative starting numbers (e.g., "-5")
+
+            shouldResetScreen = false;
+
+            // Edge Case: Ngative Number Input
             if (button.textContent === '-' && firstOperand === '') {
             firstOperand = '-';
                 populateDisplay(firstOperand);
@@ -92,9 +114,7 @@ buttons.forEach(button => {
                 // Error Handling: Check if division by zero occurred (operate returns null)
                 if (result === null) {
                     populateDisplay("Don't divide by 0!");
-                    firstOperand = '';
-                    secondOperand = '';
-                    currentOperator = null;
+                    resetCalculator();
                     return;
                 }
 
@@ -115,9 +135,7 @@ buttons.forEach(button => {
             // Error Handling: Catch division by zero before updating state
             if (result === null) {
                 populateDisplay("Nice try!");
-                firstOperand = '';
-                secondOperand = '';
-                currentOperator = null;
+                resetCalculator();
                 return;
             }
 
@@ -125,14 +143,13 @@ buttons.forEach(button => {
             firstOperand = result.toString();
             secondOperand = '';
             currentOperator = null;
+
+            shouldResetScreen = true; // Flag to reset on next digit input
         }
 
         // --- CLEAR INPUT ---
         else if (button.classList.contains('clear-all')) {
-            firstOperand = '';
-            secondOperand = '';
-            currentOperator = null;
-            result = '';
+            resetCalculator()
             populateDisplay('0');
         }
     }); 
