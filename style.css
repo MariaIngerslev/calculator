@@ -1,0 +1,140 @@
+/* -----------------------------------------------------------
+   1. SETUP & VARIABLES
+   CSS Custom Properties for consistent theming and easy maintenance.
+----------------------------------------------------------- */
+:root {
+    /* Color Palette */
+    --bg-body: #e5e5e5;
+    --bg-calc: #f9f9f9;
+    --bg-display: #f3f0ee;
+    
+    /* Button Colors */
+    --btn-primary: #d4a373;      /* Digits */
+    --btn-secondary: #a99892d4;  /* Functions (DEL, /, *) */
+    --btn-accent: #f76c6c;       /* AC */
+    --btn-equals: #f4a261;       /* = */
+    
+    /* Typography & Spacing */
+    --text-dark: #333;
+    --text-light: #fff;
+    --radius: 10px;
+    --btn-gap: 5px;              
+}
+
+/* -----------------------------------------------------------
+   2. GLOBAL RESET
+----------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* -----------------------------------------------------------
+   3. CALCULATOR CONTAINER
+----------------------------------------------------------- */
+.calculator {
+    width: 300px;
+    background-color: var(--bg-calc);
+    border: 2px solid var(--btn-secondary);
+    border-radius: var(--radius);
+    overflow: hidden; /* Ensures content respects border-radius */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    
+    /* Layout: Vertical column of rows */
+    display: flex;
+    flex-direction: column; 
+    padding: 10px;
+    gap: var(--btn-gap); 
+}
+
+/* -----------------------------------------------------------
+   4. DISPLAY AREA
+----------------------------------------------------------- */
+.display {
+    background-color: var(--bg-display);
+    color: var(--text-dark);
+    height: 100px;
+    width: 100%;
+    
+    /* Inner alignment for text */
+    display: flex;
+    justify-content: flex-end; /* Align right */
+    align-items: flex-end;     /* Align bottom */
+    
+    padding: 15px;
+    font-size: 3em;           
+    border-radius: 5px;        
+    margin-bottom: 5px;       
+    
+    /* Prevent layout breakage with long numbers */
+    overflow: hidden; 
+    white-space: nowrap;
+}
+
+/* -----------------------------------------------------------
+   5. ROWS
+----------------------------------------------------------- */
+.row {
+    display: flex;           /* Flex container for horizontal button alignment */
+    justify-content: space-between;
+    gap: var(--btn-gap);     
+}
+
+/* -----------------------------------------------------------
+   6. BUTTONS (SHARED STYLES)
+----------------------------------------------------------- */
+button {
+    /* flex: 1 allows buttons to grow and fill available space equally */
+    flex: 1; 
+    
+    height: 60px;
+    font-size: 1.5em;
+    border: none;
+    border-radius: 5px;
+    color: var(--text-light);
+    cursor: pointer;
+    background-color: var(--btn-primary);
+    
+    /* Smooth transition for hover effects */
+    transition: filter 0.2s, transform 0.1s;
+}
+
+/* State: Hover */
+/* Using brightness filter avoids defining hover colors for every button type */
+button:hover {
+    filter: brightness(0.9);
+}
+
+/* State: Active (Click) */
+button:active {
+    transform: scale(0.98); /* Subtle press effect */
+}
+
+/* -----------------------------------------------------------
+   7. SPECIFIC BUTTON STYLES
+----------------------------------------------------------- */
+.operator, .delete, .percent { background-color: var(--btn-secondary); }
+.clear-all { background-color: var(--btn-accent); }
+.equals { background-color: var(--btn-equals); }
+
+/* Layout adjustment for the '0' button */
+.zero {
+    /* Fixing alignment: 
+       Simple 'flex: 2' caused a slight misalignment because this row has fewer gaps 
+       than the rows above (2 gaps vs 3 gaps).
+       
+       Calculation: 50% width minus half a gap ensures it aligns pixel-perfectly 
+       with the two buttons above it.
+    */
+    flex: 0 0 calc(50% - (var(--btn-gap) / 2));
+}
