@@ -60,6 +60,7 @@ function resetCalculator() {
     secondOperand = '';
     currentOperator = null;
     result = '';
+    shouldResetScreen = false;
     populateDisplay('0');
 }
 
