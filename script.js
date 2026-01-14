@@ -119,6 +119,28 @@ function handleOperator(opStr) {
     populateDisplay(firstOperand + " " + currentOperator);
 }
 
+function handleEquals() {
+    if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
+    
+    const tempResult = operate(currentOperator, firstOperand, secondOperand);
+
+    // Error Handling: Catch division by zero before updating state
+    if (tempResult === null) {
+        populateDisplay("Nice try!");
+        resetCalculator();
+        return;
+    }
+
+    result = roundResult(tempResult);
+    populateDisplay(result);
+    
+    firstOperand = result.toString();
+    secondOperand = '';
+    currentOperator = null;
+
+    shouldResetScreen = true; // Flag to reset on next digit input
+}
+
 
 // --- UI INTERACTIONS ---
 
@@ -140,28 +162,12 @@ buttons.forEach(button => {
 
         // --- EQUALS INPUT ---
         else if (button.classList.contains('equals')) {
-            if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
-            result = roundResult(operate(currentOperator, firstOperand, secondOperand));
-
-            // Error Handling: Catch division by zero before updating state
-            if (result === null) {
-                populateDisplay("Nice try!");
-                resetCalculator();
-                return;
-            }
-
-            populateDisplay(result);
-            firstOperand = result.toString();
-            secondOperand = '';
-            currentOperator = null;
-
-            shouldResetScreen = true; // Flag to reset on next digit input
+            handleEquals();
         }
 
         // --- CLEAR INPUT ---
         else if (button.classList.contains('clear-all')) {
             resetCalculator()
-            populateDisplay('0');
         }
     }); 
 }); 
