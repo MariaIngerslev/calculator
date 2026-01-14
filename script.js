@@ -119,6 +119,27 @@ function handleOperator(opStr) {
     populateDisplay(firstOperand + " " + currentOperator);
 }
 
+function handleDecimal() {
+    if (shouldResetScreen === true) {
+        resetCalculator();
+        firstOperand = '0.';
+        populateDisplay(firstOperand);
+        return;
+    }
+
+    if (currentOperator === null) {
+        // Logic for first operand
+        if (firstOperand.includes('.')) return; // Guard
+        firstOperand = firstOperand === '' ? '0.' : firstOperand + '.';
+        populateDisplay(firstOperand);
+    } else {
+        // Logic for second operand
+        if (secondOperand.includes('.')) return; // Guard
+        secondOperand = secondOperand === '' ? '0.' : secondOperand + '.';
+        populateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
+    }
+}
+
 function handleEquals() {
     if (firstOperand === '' || secondOperand === '' || currentOperator === null) return;
     
@@ -141,8 +162,7 @@ function handleEquals() {
     shouldResetScreen = true; // Flag to reset on next digit input
 }
 
-
-// --- UI INTERACTIONS ---
+// --- MAIN EVENT LISTENERS ---
 
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
@@ -159,6 +179,11 @@ buttons.forEach(button => {
         else if (button.classList.contains('operator')) {
             handleOperator(button.textContent);
             }
+
+        // ... DECIMAL INPUT ...
+        else if (button.classList.contains('decimal')) {
+             handleDecimal();
+        }
 
         // --- EQUALS INPUT ---
         else if (button.classList.contains('equals')) {
