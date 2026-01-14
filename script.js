@@ -68,6 +68,24 @@ function resetCalculator() {
     populateDisplay('0');
 }
 
+// --- HANDLER FUNCTIONS ---
+
+function handleNumber(numStr) {
+    // Check state flag: Do we need to clear the old result?
+    if (shouldResetScreen === true) {
+        resetCalculator();
+        shouldResetScreen = false;
+    }
+    // Append digit to the correct operand based on whether an operator is currently active
+    if (currentOperator === null) {
+        firstOperand += numStr;
+        populateDisplay(firstOperand);
+    } else {
+        secondOperand += numStr;
+        populateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
+    }
+}
+
 // --- UI INTERACTIONS ---
 
 const display = document.querySelector('.display');
@@ -78,19 +96,7 @@ buttons.forEach(button => {
 
         // --- DIGIT INPUT ---
         if (button.classList.contains('digit')) {
-            // Check state flag: Do we need to clear the old result?
-            if (shouldResetScreen === true) {
-                resetCalculator();
-                shouldResetScreen = false;
-            }
-            // Append digit to the correct operand based on whether an operator is currently active
-            if (currentOperator === null) {
-                firstOperand += button.textContent;
-                populateDisplay(firstOperand);
-            } else {
-                secondOperand += button.textContent;
-                populateDisplay(firstOperand + currentOperator + secondOperand);
-            }
+            handleNumber(button.textContent);
         }
 
         // --- OPERATOR INPUT ---
