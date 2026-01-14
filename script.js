@@ -6,6 +6,10 @@ let currentOperator = null;
 let result = '';
 let shouldResetScreen = false;
 
+// --- DOM ELEMENTS ---
+const display = document.querySelector('.display');
+const buttons = document.querySelectorAll('button');
+
 // --- MATH FUNCTIONS ---
 function add(a, b) {
     return a + b;
@@ -52,7 +56,6 @@ function roundResult(number) {
 
 // --- UI & STATE UPDATES ---
 function populateDisplay(value) {
-    const display = document.querySelector('.display'); // Bemærk: I din nye kode flyttede vi variablen ind i funktionen, eller den skal være global
     display.textContent = value;
 }
 
@@ -163,10 +166,6 @@ function handleEquals() {
 }
 
 // --- MAIN EVENT LISTENERS ---
-
-const display = document.querySelector('.display');
-const buttons = document.querySelectorAll('button');
-
 buttons.forEach(button => {
     button.addEventListener('click', () => {
 
