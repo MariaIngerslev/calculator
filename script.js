@@ -5,6 +5,7 @@ let secondOperand = '';
 let currentOperator = null;
 let result = '';
 let shouldResetScreen = false;
+const MAX_DIGITS = 9;
 
 // --- DOM ELEMENTS ---
 const display = document.querySelector('.display');
@@ -81,8 +82,8 @@ function handleNumber(numStr) {
     }
     
     // Guard: Prevent input overflow (max 9 digits per operand)
-    if (currentOperator === null && firstOperand.length >= 9) return;
-    if (currentOperator !== null && secondOperand.length >= 9) return;
+    if (currentOperator === null && firstOperand.length >= MAX_DIGITS) return;
+    if (currentOperator !== null && secondOperand.length >= MAX_DIGITS) return;
 
     // Append digit to the correct operand based on whether an operator is currently active
     if (currentOperator === null) {
