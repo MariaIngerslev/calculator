@@ -86,6 +86,40 @@ function handleNumber(numStr) {
     }
 }
 
+function handleOperator(opStr) {
+    shouldResetScreen = false;
+
+    // Edge Case: Negative Number Input
+    if (opStr === '-' && firstOperand === '') {
+        firstOperand = '-';
+        populateDisplay(firstOperand);
+        return;
+    }
+
+    // Guard: Prevent operator selection if no number is entered yet
+    if (firstOperand === '') return; 
+    
+    // Chained Operations: If expression is full (a + b), calculate immediately before adding new operator
+    if (secondOperand !== '') {
+        const tempResult = operate(currentOperator, firstOperand, secondOperand);
+        // Error Handling: Check if division by zero occurred (operate returns null)
+        if (tempResult === null) {
+            populateDisplay("Don't divide by 0!");
+            resetCalculator();
+            return;
+        }
+
+        result = roundResult(tempResult);
+        firstOperand = result.toString(); // Move result to first position
+        secondOperand = ''; // Reset second position
+    }
+
+    // Set new operator and update view
+    currentOperator = opStr;
+    populateDisplay(firstOperand + " " + currentOperator);
+}
+
+
 // --- UI INTERACTIONS ---
 
 const display = document.querySelector('.display');
@@ -101,38 +135,8 @@ buttons.forEach(button => {
 
         // --- OPERATOR INPUT ---
         else if (button.classList.contains('operator')) {
-
-            shouldResetScreen = false;
-
-            // Edge Case: Ngative Number Input
-            if (button.textContent === '-' && firstOperand === '') {
-            firstOperand = '-';
-                populateDisplay(firstOperand);
-                return;
+            handleOperator(button.textContent);
             }
-
-            // Guard: Prevent operator selection if no number is entered yet
-            if (firstOperand === '') return; 
-            
-            // Chained Operations: If expression is full (a + b), calculate immediately before adding new operator
-            if (secondOperand !== '') {
-                result = roundResult(operate(currentOperator, firstOperand, secondOperand));
-
-                // Error Handling: Check if division by zero occurred (operate returns null)
-                if (result === null) {
-                    populateDisplay("Don't divide by 0!");
-                    resetCalculator();
-                    return;
-                }
-
-                firstOperand = result.toString(); // Move result to first position
-                secondOperand = ''; // Reset second position
-            }
-
-            // Set new operator and update view
-            currentOperator = button.textContent;
-            populateDisplay(firstOperand + currentOperator);
-        }
 
         // --- EQUALS INPUT ---
         else if (button.classList.contains('equals')) {
