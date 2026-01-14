@@ -50,7 +50,11 @@ function roundResult(number) {
     return Math.round(number * 1000) / 1000;
 } 
 
-// --- HELPER FUNCTIONS ---
+// --- UI & STATE UPDATES ---
+function populateDisplay(value) {
+    const display = document.querySelector('.display'); // Bemærk: I din nye kode flyttede vi variablen ind i funktionen, eller den skal være global
+    display.textContent = value;
+}
 
 /**
  * Resets all state variables and clears the display.
@@ -68,10 +72,6 @@ function resetCalculator() {
 
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
-
-function populateDisplay(value) {
-    display.textContent = value;
-}
 
 buttons.forEach(button => {
     button.addEventListener('click', () => {
