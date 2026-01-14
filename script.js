@@ -79,6 +79,11 @@ function handleNumber(numStr) {
         resetCalculator();
         shouldResetScreen = false;
     }
+    
+    // Guard: Prevent input overflow (max 9 digits per operand)
+    if (currentOperator === null && firstOperand.length >= 9) return;
+    if (currentOperator !== null && secondOperand.length >= 9) return;
+
     // Append digit to the correct operand based on whether an operator is currently active
     if (currentOperator === null) {
         firstOperand += numStr;
@@ -195,6 +200,3 @@ buttons.forEach(button => {
         }
     }); 
 }); 
-
-
-
