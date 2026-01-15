@@ -231,8 +231,9 @@ buttons.forEach(button => {
 
         // --- OPERATOR INPUT ---
         else if (button.classList.contains('operator')) {
-            handleOperator(button.textContent);
-            }
+        const operatorValue = button.dataset.val || button.textContent;
+        handleOperator(operatorValue);
+        }
 
         // ... DECIMAL INPUT ...
         else if (button.classList.contains('decimal')) {
