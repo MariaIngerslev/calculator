@@ -5,7 +5,7 @@ let secondOperand = '';
 let currentOperator = null;
 let result = '';
 let shouldResetScreen = false;
-const MAX_DIGITS = 9;
+const MAX_DIGITS = 7;
 
 // --- DOM ELEMENTS ---
 const display = document.querySelector('.display');
@@ -51,9 +51,17 @@ function operate(operator, rawNum1, rawNum2) {
     }
 }
 
-function roundResult(number) {
+function formatResult(number) {
+    if (number === null) return null;
+
+    const stringValue = number.toString();
+
+    if (stringValue.length > MAX_DIGITS) {
+        return number.toExponential(2); 
+    }
+    
     return Math.round(number * 1000) / 1000;
-} 
+}
 
 // --- UI & STATE UPDATES ---
 function populateDisplay(value) {
@@ -73,7 +81,6 @@ function resetCalculator() {
 }
 
 // --- HANDLER FUNCTIONS ---
-
 function handleNumber(numStr) {
     // Check state flag: Do we need to clear the old result?
     if (shouldResetScreen === true) {
