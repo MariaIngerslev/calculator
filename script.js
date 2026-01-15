@@ -152,11 +152,11 @@ function handleOperator(opStr) {
         result = formatResult(tempResult);
         firstOperand = result.toString(); // Move result to first position
         secondOperand = ''; // Reset second position
+        updateDisplay(firstOperand); // Show result of the chain
     }
 
-    // Set new operator and update view
+    // Store the operator but DO NOT update display.
     currentOperator = opStr;
-    updateDisplay(firstOperand + " " + currentOperator);
 }
 
 function handleDecimal() {
