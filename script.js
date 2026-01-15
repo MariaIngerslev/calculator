@@ -28,6 +28,17 @@ function divide(a, b) {
     return a / b;
 }
 
+function convertToPercent(a) {
+    return a / 100;
+}
+
+/**
+ * Calculates the percentage of a total value.
+ */
+function calculateRelativePercentage(total, percentage) {
+    return (total * percentage) / 100;
+}
+
 /**
  * Takes an operator and two strings, converts them to numbers,
  * and calls the relevant math function.
@@ -159,6 +170,34 @@ function handleOperator(opStr) {
     currentOperator = opStr;
 }
 
+function handlePercentage() {
+    // Logic for single operand
+    if (currentOperator === null) {
+        if (firstOperand === '') return;
+        
+        const currentNum = Number(firstOperand);
+        const resultNum = convertToPercent(currentNum);
+        
+        // Update state and UI
+        firstOperand = resultNum.toString();
+        updateDisplay(firstOperand);
+    } 
+    // Logic for operation with two operands 
+    else {
+        if (secondOperand === '') return;
+
+        const total = Number(firstOperand);
+        const percentage = Number(secondOperand);
+        
+        // Calculate the relative value (e.g., 10% of 200 is 20)
+        const relativeValue = calculateRelativePercentage(total, percentage);
+        
+        // Update state with the new value so the pending operation uses it
+        secondOperand = relativeValue.toString();
+        updateDisplay(secondOperand);
+    }
+}
+
 function handleDecimal() {
     if (shouldResetScreen === true) {
         resetCalculator();
@@ -233,6 +272,11 @@ buttons.forEach(button => {
         else if (button.classList.contains('operator')) {
         const operatorValue = button.dataset.val || button.textContent;
         handleOperator(operatorValue);
+        }
+        
+        // ... PERCENT INPUT ...
+        else if (button.classList.contains('percent')) {
+            handlePercentage();
         }
 
         // ... DECIMAL INPUT ...
