@@ -5,7 +5,8 @@ let secondOperand = '';
 let currentOperator = null;
 let result = '';
 let shouldResetScreen = false;
-const MAX_DIGITS = 7;
+const MAX_INPUT_LENGTH = 7;
+const MAX_RESULT_LENGTH = 10;
 
 // --- DOM ELEMENTS ---
 const display = document.querySelector('.display');
@@ -69,12 +70,12 @@ function formatResult(number) {
     // Guard clause: Handle invalid math operations (like division by zero)
     if (number === null) return null;
 
-    const rounded = parseFloat(number.toFixed(8)); // Avoid floating point precision issues
+    const rounded = parseFloat(number.toFixed(MAX_RESULT_LENGTH)); // Avoid floating point precision issues
 
     const stringValue = rounded.toString();
 
     // Check if the number exceeds the display limit
-    if (stringValue.length > MAX_DIGITS) {
+    if (stringValue.length > MAX_RESULT_LENGTH) {
         return number.toExponential(2); 
     }
 
@@ -92,8 +93,8 @@ function updateDisplay(text) {
     
     // Safety Net: Hard truncate if text exceeds visual container limit (12 chars)
     // This handles edge cases like long negative numbers or decimals
-    if (textStr.length > 8) {
-        display.textContent = textStr.substring(0, 8);
+    if (textStr.length > MAX_RESULT_LENGTH) {
+        display.textContent = textStr.substring(0, MAX_RESULT_LENGTH);
     } else {
         display.textContent = textStr;
     }
@@ -123,14 +124,14 @@ function handleNumber(numStr) {
 
     if (currentOperator === null) {
         // Input Validation: Enforce character limit for the first operand
-        if (firstOperand.length >= MAX_DIGITS) return;
+        if (firstOperand.length >= MAX_INPUT_LENGTH) return;
 
         // Logic for First Operand
         firstOperand += numStr;
         updateDisplay(firstOperand); // Only show the number being typed
     } else {
         // Input Validation: Enforce character limit for the second operand
-        if (secondOperand.length >= MAX_DIGITS) return;
+        if (secondOperand.length >= MAX_INPUT_LENGTH) return;
         
         // Logic for Second Operand
         secondOperand += numStr;
