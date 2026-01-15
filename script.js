@@ -107,17 +107,22 @@ function handleNumber(numStr) {
         shouldResetScreen = false;
     }
     
-    // Guard: Prevent input overflow (max 9 digits per operand)
-    if (currentOperator === null && firstOperand.length >= MAX_DIGITS) return;
-    if (currentOperator !== null && secondOperand.length >= MAX_DIGITS) return;
+    // LOGIC: Update operands individually to emulate standard calculator behavior
 
-    // Append digit to the correct operand based on whether an operator is currently active
     if (currentOperator === null) {
+        // Input Validation: Enforce character limit for the first operand
+        if (firstOperand.length >= MAX_DIGITS) return;
+
+        // Logic for First Operand
         firstOperand += numStr;
-        updateDisplay(firstOperand);
+        updateDisplay(firstOperand); // Only show the number being typed
     } else {
+        // Input Validation: Enforce character limit for the second operand
+        if (secondOperand.length >= MAX_DIGITS) return;
+        
+        // Logic for Second Operand
         secondOperand += numStr;
-        updateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
+        updateDisplay(secondOperand); // Visually overwrite display with second operand
     }
 }
 
