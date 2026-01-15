@@ -160,6 +160,7 @@ function handleOperator(opStr) {
 }
 
 function handleDecimal() {
+    // Reset state if typing a decimal after a completed calculation
     if (shouldResetScreen === true) {
         resetCalculator();
         firstOperand = '0.';
@@ -176,7 +177,7 @@ function handleDecimal() {
         // Logic for second operand
         if (secondOperand.includes('.')) return; // Guard
         secondOperand = secondOperand === '' ? '0.' : secondOperand + '.';
-        updateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
+        updateDisplay(secondOperand);
     }
 }
 
