@@ -160,7 +160,6 @@ function handleOperator(opStr) {
 }
 
 function handleDecimal() {
-    // Reset state if typing a decimal after a completed calculation
     if (shouldResetScreen === true) {
         resetCalculator();
         firstOperand = '0.';
@@ -203,6 +202,24 @@ function handleEquals() {
     shouldResetScreen = true; // Flag to reset on next digit input
 }
 
+function handleBackspace() {
+    if (shouldResetScreen === true) {
+        resetCalculator();
+    return; 
+    }
+
+    if (currentOperator === null) {
+        // Logic for first operand
+        firstOperand = firstOperand.slice(0, -1);
+        updateDisplay(firstOperand === '' ? '0' : firstOperand);
+    } else {
+        // Logic for second operand
+        secondOperand = secondOperand.slice(0, -1);
+        updateDisplay(secondOperand === '' ? '0' : secondOperand);
+    }
+}
+
+
 // --- MAIN EVENT LISTENERS ---
 buttons.forEach(button => {
     button.addEventListener('click', () => {
@@ -230,6 +247,11 @@ buttons.forEach(button => {
         // --- CLEAR INPUT ---
         else if (button.classList.contains('clear-all')) {
             resetCalculator()
+        }
+
+        // --- BACKSPACE INPUT ---
+        else if (button.classList.contains('delete')) {
+            handleBackspace();
         }
     }); 
 }); 
