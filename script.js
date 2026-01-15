@@ -70,8 +70,21 @@ function formatResult(number) {
 }
 
 // --- UI & STATE UPDATES ---
-function populateDisplay(value) {
-    display.textContent = value;
+
+/**
+ * Updates the DOM display element.
+ * Acts as a single source of truth for UI rendering to prevent layout breakage.
+ */
+function updateDisplay(text) {
+    const textStr = text.toString();
+    
+    // Safety Net: Hard truncate if text exceeds visual container limit (12 chars)
+    // This handles edge cases like long negative numbers or decimals
+    if (textStr.length > 8) {
+        display.textContent = textStr.substring(0, 8);
+    } else {
+        display.textContent = textStr;
+    }
 }
 
 /**
@@ -83,7 +96,7 @@ function resetCalculator() {
     currentOperator = null;
     result = '';
     shouldResetScreen = false;
-    populateDisplay('0');
+    updateDisplay('0');
 }
 
 // --- HANDLER FUNCTIONS ---
@@ -101,10 +114,10 @@ function handleNumber(numStr) {
     // Append digit to the correct operand based on whether an operator is currently active
     if (currentOperator === null) {
         firstOperand += numStr;
-        populateDisplay(firstOperand);
+        updateDisplay(firstOperand);
     } else {
         secondOperand += numStr;
-        populateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
+        updateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
     }
 }
 
@@ -114,7 +127,7 @@ function handleOperator(opStr) {
     // Edge Case: Negative Number Input
     if (opStr === '-' && firstOperand === '') {
         firstOperand = '-';
-        populateDisplay(firstOperand);
+        updateDisplay(firstOperand);
         return;
     }
 
@@ -126,7 +139,7 @@ function handleOperator(opStr) {
         const tempResult = operate(currentOperator, firstOperand, secondOperand);
         // Error Handling: Check if division by zero occurred (operate returns null)
         if (tempResult === null) {
-            populateDisplay("Don't divide by 0!");
+            updateDisplay("Don't divide by 0!");
             resetCalculator();
             return;
         }
@@ -138,14 +151,14 @@ function handleOperator(opStr) {
 
     // Set new operator and update view
     currentOperator = opStr;
-    populateDisplay(firstOperand + " " + currentOperator);
+    updateDisplay(firstOperand + " " + currentOperator);
 }
 
 function handleDecimal() {
     if (shouldResetScreen === true) {
         resetCalculator();
         firstOperand = '0.';
-        populateDisplay(firstOperand);
+        updateDisplay(firstOperand);
         return;
     }
 
@@ -153,12 +166,12 @@ function handleDecimal() {
         // Logic for first operand
         if (firstOperand.includes('.')) return; // Guard
         firstOperand = firstOperand === '' ? '0.' : firstOperand + '.';
-        populateDisplay(firstOperand);
+        updateDisplay(firstOperand);
     } else {
         // Logic for second operand
         if (secondOperand.includes('.')) return; // Guard
         secondOperand = secondOperand === '' ? '0.' : secondOperand + '.';
-        populateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
+        updateDisplay(firstOperand + " " + currentOperator + " " + secondOperand);
     }
 }
 
@@ -169,13 +182,13 @@ function handleEquals() {
 
     // Error Handling: Catch division by zero before updating state
     if (tempResult === null) {
-        populateDisplay("Nice try!");
+        updateDisplay("Nice try!");
         resetCalculator();
         return;
     }
 
     result = roundResult(tempResult);
-    populateDisplay(result);
+    updateDisplay(result);
     
     firstOperand = result.toString();
     secondOperand = '';
