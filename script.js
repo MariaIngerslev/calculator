@@ -144,7 +144,7 @@ function handleOperator(opStr) {
             return;
         }
 
-        result = roundResult(tempResult);
+        result = formatResult(tempResult);
         firstOperand = result.toString(); // Move result to first position
         secondOperand = ''; // Reset second position
     }
@@ -187,7 +187,7 @@ function handleEquals() {
         return;
     }
 
-    result = roundResult(tempResult);
+    result = formatResult(tempResult);
     updateDisplay(result);
     
     firstOperand = result.toString();
