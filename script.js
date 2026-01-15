@@ -63,21 +63,22 @@ function operate(operator, rawNum1, rawNum2) {
 }
 /**
  * Formats the result to fit the display.
- * Uses scientific notation for large numbers to prevent overflow.
+ * Prioritizes rounding to standard decimal before falling back to scientific notation.
  */
 function formatResult(number) {
     // Guard clause: Handle invalid math operations (like division by zero)
     if (number === null) return null;
 
-    const stringValue = number.toString();
+    const rounded = parseFloat(number.toFixed(8)); // Avoid floating point precision issues
+
+    const stringValue = rounded.toString();
 
     // Check if the number exceeds the display limit
     if (stringValue.length > MAX_DIGITS) {
         return number.toExponential(2); 
     }
-    
-    // Default: Round to 3 decimal places for readability
-    return Math.round(number * 1000) / 1000;
+
+    return rounded;
 }
 
 // --- UI & STATE UPDATES ---
