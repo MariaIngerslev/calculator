@@ -46,7 +46,7 @@ Instead of "spaghetti code," I separated the application into distinct logical l
 ## 📂 Project Structure
 
 ```bash
-/calculator-project
+/calculator
 │── index.html      # Structure
 │── style.css       # Styling & Variables
 │── script.js       # Logic, State & Event Listeners
