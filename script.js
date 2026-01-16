@@ -302,3 +302,46 @@ buttons.forEach(button => {
         }
     }); 
 }); 
+
+// --- KEYBOARD SUPPORT ---
+
+window.addEventListener('keydown', (e) => {
+    // e.key holds the value of the key pressed (e.g., "1", "Enter", "Backspace")
+    
+    // 1. Numbers (0-9)
+    if (e.key >= '0' && e.key <= '9') {
+        handleNumber(e.key);
+    }
+    
+    // 2. Operators (+, -, *, /)
+    if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+        handleOperator(e.key);
+    }
+    
+    // 3. Equals (Enter or =)
+    if (e.key === 'Enter' || e.key === '=') {
+        // Prevent default behavior implies preventing "Enter" from triggering a focused button
+        e.preventDefault(); 
+        handleEquals();
+    }
+    
+    // 4. Backspace (Delete last char)
+    if (e.key === 'Backspace') {
+        handleBackspace();
+    }
+
+    // 5. Escape (Clear all)
+    if (e.key === 'Escape') {
+        resetCalculator();
+    }
+
+    // 6. Decimal point
+    if (e.key === '.') {
+        handleDecimal();
+    }
+
+    // 7. Percentage (%)
+    if (e.key === '%') {
+        handlePercentage();
+    }
+});
